@@ -1,15 +1,15 @@
 "a" = (/turf/wall,/area)
 "b" = (/turf/foundation,/area)
 "c" = (/turf/floor,/area)
-"d" = (/mob/Player,/turf/floor,/area)
+"d" = (/mob/Player{key = "tempkey1111111"; name = "Test Player"},/turf/floor,/area)
 
 (1,1,1) = {"
 aaaaaaaaaa
 abbbbbbbba
 acccccccca
 acccccccca
-accdccccca
 acccccccca
+acdcccccca
 acccccccca
 acccccccca
 acccccccca

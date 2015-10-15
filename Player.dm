@@ -26,14 +26,27 @@ mob
 			statpanel("Inventory")
 			stat(new/obj/clothes/shirt, "Shirt")
 
-			if(sensePanel && statpanel("Sense"))
+			if(sensePanel && statpanel(senseTarget.name))
 				stat(senseTarget)
 				stat("BP		    ", "[commas(num2text(senseTarget.bp, 24))]")
 				stat("Health		", "[senseTarget.health]")
 
 		Click()
-			sensePanel = !sensePanel
-			senseTarget = src
+			var/mob/Player/M=usr
+			if(!istype(M)) return
+
+			if(M.senseTarget == src)
+				M.sensePanel = !M.sensePanel
+			if(M.senseTarget == null)
+				M.sensePanel = 1
+
+			M.senseTarget = src
+
+
+			if(M.senseTarget == usr)
+				M.sensePanel = 0
+
+			NotifyWorld(M.sensePanel)
 
 
 		verb
