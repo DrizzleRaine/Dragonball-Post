@@ -1,0 +1,20 @@
+// BEGIN_INTERNALS
+// END_INTERNALS
+// BEGIN_FILE_DIR
+#define FILE_DIR .
+#define FILE_DIR "Icons"
+// END_FILE_DIR
+// BEGIN_PREFERENCES
+// END_PREFERENCES
+// BEGIN_INCLUDE
+#include "attacking.dm"
+#include "Items.dm"
+#include "MapGen.dm"
+#include "MiniMap.dm"
+#include "movement_2.dm"
+#include "Player.dm"
+#include "SwapMaps.dm"
+#include "world.dm"
+#include "skin.dmf"
+#include "test.dmm"
+// END_INCLUDE
