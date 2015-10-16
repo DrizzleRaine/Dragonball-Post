@@ -18,3 +18,4 @@
 #include "Scripts\world.dm"
 #include "Skin\skin.dmf"
 // END_INCLUDE
+#define DEBUG

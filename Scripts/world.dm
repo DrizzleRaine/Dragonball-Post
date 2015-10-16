@@ -13,7 +13,8 @@ world
 
 client
 	var/maps
-	//var/swapmap/map2=new("2", 500, 500, 1)
+	var/swapmap/map=new("1", 500, 500, 1)
+	var/swapmap/map2=new("2", 500, 500, 1)
 	New()
 
 		// This draws the map on the screen and scans the entire map.

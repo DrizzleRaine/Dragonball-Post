@@ -1,3 +1,6 @@
+//#define DEBUG
+
+
 mob
 	var/randDir
 	var/kbChance
@@ -8,8 +11,9 @@ mob
 
 	verb
 		Attack(mob/M as mob in get_step(src,dir))
+			var/mob/Player/P=src
 			set popup_menu = 0
-			if (attacking == 0)
+			if (attacking == 0 && P.c_energy > 0)
 				attacking = 1
 				if (rand(1,2) == 1)
 					flick("Attack",src)
@@ -21,20 +25,28 @@ mob
 					icon_state = ""
 				kbChance = src.strength
 
+				P.c_energy -= 1
+
 				var/offroll = (roll(src.offense, 3) * rand(2, 10) / 10) * src.bp
 				var/defroll = (roll(M.defense, 3) * rand(3, 12) / 10) * M.bp
 
 				if (offroll >= defroll) // Accuracy algorithm
+
+					#if defined(DEBUG)
 					NotifyWorld("[src.key] hit [M.key]! ([offroll] / [src.offense * 3 * src.bp] offense)  ([defroll] / [M.defense * 3 * 1.2 * M.bp] defense)")
+					#endif
+
 					Hit(src, M, offroll, defroll)
 				else // If they dodge
 					if(prob(3)) // Lucky Strike
 						Hit(src, M)
-						NotifyWorld("Lucky Strike!")
 						return
 
 					flick("Zanzo",M)
+
+					#if defined(DEBUG)
 					NotifyWorld("[src.key] missed [M.key]! ([offroll] / [src.offense * 3 * src.bp] offense)  ([defroll] / [M.defense * 3 * 1.2 * M.bp] defense)")
+					#endif
 
 				sleep(50 / src.speed)
 				attacking = 0

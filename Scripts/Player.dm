@@ -7,6 +7,11 @@ mob
 		var/mob/Player/senseTarget
 		var/sparring = 0
 
+		var/regeneration
+		var/recovery
+		var/energy
+		var/c_energy
+
 
 
 		New()
@@ -21,9 +26,23 @@ mob
 			c_health = health
 			speed = 5.0
 
+			regeneration = 1
+			recovery = 1
+			energy = 100
+			c_energy = 100
+
 			return ..()
 
 		Stat()
+			if(c_health < health)
+				c_health += regeneration / 10
+			else if(c_health > health)
+				c_health = health
+
+			usr << output("Health: [c_health]%", "health")
+			usr << output("Energy: [c_energy / energy * 100]%", "energy")
+			usr << output("Power: [bp / base * 100]%", "power")
+
 			stat("BP		    ","[commas(num2text(round(bp), 24))]")
 			stat("Offense		","[round(offense)]")
 			stat("Defense		","[round(defense)]");
@@ -82,7 +101,7 @@ mob
 					o.Scan()
 
 				src << output("[src.x], [src.y], [src.z]", "text")
-			/*MiniMap()
+			MiniMap()
 				if(!MapOn)
 					client.maps = client.minimap_Place(10,10,11,11,locate(1,1,usr.z),locate(world.maxx,world.maxy,usr.z))
 					MapOn = 1
@@ -93,7 +112,7 @@ mob
 					for(var/MapObj/o in client.maps)
 						del o
 					MapOn = 0
-					src << output("Map Off", "text")*/
+					src << output("Map Off", "text")
 			Say(msg as text)
 				world << output("<font color =[fcolor]><b>[usr]</b></font>: [msg]", "text")
 			Fly()
@@ -189,19 +208,19 @@ mob
 					var/swapmap/sm
 					sm = SwapMaps_Find("[i + 1]")
 					if(sm != null)
-						if(SwapMaps_SaveChunk("chunk[i]", sm.LoCorner(), locate(250, 250, sm.z1)))
+						if(SwapMaps_SaveChunk("chunk[i]", sm.LoCorner(), locate(500, 500, sm.z1)))
 							if(i > chunks)
 								chunks += 1
 							src << output("Chunk [i] saved", "text")
 
 			TestLoad()
 				var/i
-				var/swapmap/sm=new("3", 500, 500, 1)
+				var/swapmap/sm=new("3", 1000, 1000, 1)
 				for(i=0, i<2, i++)
-					if(SwapMaps_LoadChunk("chunk[i]", locate(sm.x1 + (250 * i), sm.y1, sm.z1)))
+					if(SwapMaps_LoadChunk("chunk[i]", locate(sm.x1 + (500 * i), sm.y1, sm.z1)))
 						sleep(1)
 						src << output("Chunk [i] loaded succesfully", "text")
-					if(SwapMaps_LoadChunk("chunk[i]", locate(sm.x1 + (250 * i), sm.y1 + 250, sm.z1)))
+					if(SwapMaps_LoadChunk("chunk[i]", locate(sm.x1 + (500 * i), sm.y1 + 500, sm.z1)))
 						sleep(1)
 						src << output("Chunk [i] loaded succesfully", "text")
 
