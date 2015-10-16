@@ -44,8 +44,6 @@ mob
 	step_size = 32;
 	icon = 'player.dmi'
 
-	var/bp
-
 	MapColor=rgb(0,255,255)
 
 	Login()
@@ -57,6 +55,7 @@ mob
 		NotifyWorld("[M.name]")
 		//M = src;
 		..()
+
 	Logout()
 		del src;
 
@@ -67,11 +66,14 @@ mob
 	var/warping = 0
 	var/flying = 0
 	var
+		bp = 1
+		base = 1
 		offense = 1
 		defense = 1
 		strength = 1
 		endurance = 1
 		health = 100
+		c_health = 100
 		speed = 1
 
 	dummy

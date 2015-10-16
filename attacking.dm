@@ -15,7 +15,7 @@ mob
 					flick("Attack",src)
 				else
 					flick("Ishina",src)
-				if (flying == 1)
+				if (flying == 		1)
 					icon_state = "Flight"
 				else
 					icon_state = ""
@@ -28,7 +28,7 @@ mob
 					NotifyWorld("[src.key] hit [M.key]! ([offroll] / [src.offense * 3 * src.bp] offense)  ([defroll] / [M.defense * 3 * 1.2 * M.bp] defense)")
 					Hit(src, M, offroll, defroll)
 				else // If they dodge
-					if(prob(30)) // Lucky Strike
+					if(prob(3)) // Lucky Strike
 						Hit(src, M)
 						NotifyWorld("Lucky Strike!")
 						return
@@ -88,17 +88,22 @@ mob
 			var/offroll = (roll(a.strength, 3) * rand(8, 10) / 10) * a.bp
 			var/defroll = (roll(d.endurance, 3) * rand(8, 10) / 10) * d.bp
 
-			if(offroll > defroll)
-				d.health -= offroll - defroll
+			d.c_health -= (offroll / defroll) * 5
+			d.c_health -= (d.health / 1000)
+			NotifyWorld("<font color = blue>[d.name] took [abs((offroll / defroll) * 5 - d.health / 1000)] damage!</font>")
+
+			d.bp = (d.c_health / d.health) * base
+
 			init_speed = d.speed
-			d.speed += a.strength / d.endurance
-			flick("KB",d)
-			for(var/i in 1 to a.strength/d.endurance)
-				walk(d,a.dir, 0, 32)
-			spawn(2)
-			walk(d,0, 0, 0)
-			spawn(2)
-			d.speed = init_speed
+			if((offroll / defroll) * 5 > 5)
+				d.speed = (offroll / defroll) * 10
+				flick("KB",d)
+				for(var/i in 1 to a.strength/d.endurance)
+					walk(d,a.dir, 0, 32)
+				spawn(2)
+				walk(d,0, 0, 0)
+				spawn(2)
+				d.speed = init_speed
 			if (warping == 1)
 				a.Move(get_step(d,randomDir()))
 				if (randDir != a.dir)
@@ -107,7 +112,7 @@ mob
 					a.icon_state = ""
 			src.dir = (get_dir(a,d))
 
-			sleep(50 / src.speed)
+			sleep(100 / src.speed)
 			attacking = 0
 
 			return

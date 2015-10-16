@@ -6,30 +6,37 @@ mob
 		var/sensePanel = 0
 		var/mob/Player/senseTarget
 
-		bp = 1.0
 
-		offense = 1.0
-		defense = 1.0
-		strength = 5.0
-		endurance = 1.0
-		health = 100.0
-		speed = 5.0
+
+		New()
+			bp = 10
+			base = 10
+
+			offense = 1.0
+			defense = 1.0
+			strength = 5.0
+			endurance = 10.0
+			health = 100
+			c_health = health
+			speed = 5.0
+
+			return ..()
 
 		Stat()
-			stat("BP		    ","[commas(num2text(bp, 24))]")
-			stat("Offense		","[offense]")
-			stat("Defense		","[defense]");
-			stat("Strength		","[strength]");
-			stat("Endurance		","[endurance]");
-			stat("Speed			","[speed]");
+			stat("BP		    ","[commas(num2text(round(bp), 24))]")
+			stat("Offense		","[round(offense)]")
+			stat("Defense		","[round(defense)]");
+			stat("Strength		","[round(strength)]");
+			stat("Endurance		","[round(endurance)]");
+			stat("Speed			","[round(speed)]");
 
 			statpanel("Inventory")
 			stat(new/obj/clothes/shirt, "Shirt")
 
 			if(sensePanel && statpanel(senseTarget.name))
 				stat(senseTarget)
-				stat("BP		    ", "[commas(num2text(senseTarget.bp, 24))]")
-				stat("Health		", "[senseTarget.health]")
+				stat("BP		    ", "[commas(num2text(round(senseTarget.bp), 24))]")
+				stat("Health		", "[round(senseTarget.c_health)]")
 
 		Click()
 			var/mob/Player/M=usr
@@ -113,12 +120,16 @@ mob
 			Summon(mob/Player/M as mob in world)
 				M.loc = locate(src.x, src.y, src.z)
 
+			Heal(mob/Player/M as mob in world)
+				M.c_health = M.health
+				M.bp = M.base
+
 
 			Edit(mob/M as mob in world)
 				var/pick_stat = input("Edit") in list("BP", "Offense","Defense", "Strength", "Endurance", "Speed");
 				switch(pick_stat)
 					if("BP")
-						M.bp = input("Set [pick_stat] to what value?", "Value", M.bp)
+						M.bp = input("Set [pick_stat] to what value?", "Value", M.base)
 					if("Offense")
 						M.offense = input("Set [pick_stat] to what value?", "Value", M.offense)
 					if("Defense")
