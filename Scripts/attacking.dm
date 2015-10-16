@@ -40,6 +40,8 @@ mob
 				attacking = 0
 
 
+
+
 		Grab(mob/M as mob in get_step(src,dir))
 			set popup_menu = 0
 			world << "[src] grabs [M]!"
@@ -85,12 +87,15 @@ mob
 
 
 		Hit(mob/a, mob/d)
+			var/mob/Player/M=a
+
 			var/offroll = (roll(a.strength, 3) * rand(8, 10) / 10) * a.bp
 			var/defroll = (roll(d.endurance, 3) * rand(8, 10) / 10) * d.bp
 
-			d.c_health -= (offroll / defroll) * 5
+			if(!M.sparring)
+				d.c_health -= (offroll / defroll) * 5
+
 			d.c_health -= (d.health / 1000)
-			NotifyWorld("<font color = blue>[d.name] took [abs((offroll / defroll) * 5 - d.health / 1000)] damage!</font>")
 
 			d.bp = (d.c_health / d.health) * base
 

@@ -5,6 +5,7 @@ mob
 		var/MapOn = 0
 		var/sensePanel = 0
 		var/mob/Player/senseTarget
+		var/sparring = 0
 
 
 
@@ -145,6 +146,9 @@ mob
 				src.overlays += new/obj/clothes/shirt
 			Remove()
 				src.overlays -= new/obj/clothes/shirt
+
+			Spar_Mode()
+				src.sparring = !src.sparring
 
 			RegenMap()
 				var/holdmap
