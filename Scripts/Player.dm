@@ -6,6 +6,8 @@ mob
 		var/sensePanel = 0
 		var/mob/Player/senseTarget
 		var/sparring = 0
+		var/meditating = 0
+		var/ableToMove = 1
 
 		var/regeneration
 		var/recovery
@@ -35,13 +37,24 @@ mob
 
 		Stat()
 			if(c_health < health)
-				c_health += regeneration / 10
+				if(meditating)
+					c_health += regeneration / 10
+				else
+					c_health += regeneration / 50
 			else if(c_health > health)
 				c_health = health
 
-			usr << output("Health: [c_health]%", "health")
-			usr << output("Energy: [c_energy / energy * 100]%", "energy")
-			usr << output("Power: [bp / base * 100]%", "power")
+			if(c_energy < energy)
+				if(meditating)
+					c_energy += (recovery / 100) * energy
+				else
+					c_energy += (recovery / 500) * energy
+			else if(c_energy > energy)
+				c_energy = energy
+
+			usr << output("Health: [round(c_health)]%", "health")
+			usr << output("Energy: [round(c_energy / energy * 100)]%", "energy")
+			usr << output("Power: [round(bp / base * 100)]%", "power")
 
 			stat("BP		    ","[commas(num2text(round(bp), 24))]")
 			stat("Offense		","[round(offense)]")
@@ -58,6 +71,12 @@ mob
 				stat("BP		    ", "[commas(num2text(round(senseTarget.bp), 24))]")
 				stat("Health		", "[round(senseTarget.c_health)]")
 
+		Move()
+			if(!ableToMove)
+				return
+			else
+				. = ..()
+
 		Click()
 			var/mob/Player/M=usr
 			if(!istype(M)) return
@@ -72,11 +91,16 @@ mob
 
 			if(M.senseTarget == usr)
 				M.sensePanel = 0
-
-			NotifyWorld(M.sensePanel)
-
-
 		verb
+			Meditate()
+				meditating = !meditating
+				if(meditating)
+					icon_state = "Meditate"
+					ableToMove = 0
+				else
+					icon_state = ""
+					ableToMove = 1
+
 			XYZ_Teleport()
 				var/holdx
 				var/holdy

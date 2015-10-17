@@ -102,8 +102,8 @@ window "default"
 		type = LABEL
 		pos = 531,480
 		size = 109x20
-		anchor1 = 70,100
-		anchor2 = 83,100
+		anchor1 = 83,100
+		anchor2 = 100,100
 		font-family = "sans-serif,Verdana"
 		font-size = 0
 		font-style = ""
