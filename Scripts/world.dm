@@ -36,9 +36,6 @@ client
 	Move()
 		. =..()
 		// When the mob moves, we have to make all the maps on his screen rescan
-		if(.)
-			for(var/MapObj/o in maps)
-				o.Scan()
 
 
 mob

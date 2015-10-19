@@ -1,3 +1,8 @@
+#define OFF offense
+#define DEF defense
+#define STR strength
+#define END endurance
+
 mob
 	Player
 
@@ -7,6 +12,7 @@ mob
 		var/mob/Player/senseTarget
 		var/sparring = 0
 		var/meditating = 0
+		var/selfTraining = 0
 		var/ableToMove = 1
 
 		var/regeneration
@@ -52,6 +58,11 @@ mob
 			else if(c_energy > energy)
 				c_energy = energy
 
+
+			if(selfTraining)
+				STR += 0.1
+				END += 0.1
+
 			usr << output("Health: [round(c_health)]%", "health")
 			usr << output("Energy: [round(c_energy / energy * 100)]%", "energy")
 			usr << output("Power: [round(bp / base * 100)]%", "power")
@@ -70,6 +81,8 @@ mob
 				stat(senseTarget)
 				stat("BP		    ", "[commas(num2text(round(senseTarget.bp), 24))]")
 				stat("Health		", "[round(senseTarget.c_health)]")
+
+			sleep(10)
 
 		Move()
 			if(!ableToMove)
@@ -96,6 +109,15 @@ mob
 				meditating = !meditating
 				if(meditating)
 					icon_state = "Meditate"
+					ableToMove = 0
+				else
+					icon_state = ""
+					ableToMove = 1
+
+			Train()
+				selfTraining = !selfTraining
+				if(selfTraining)
+					icon_state = "Train"
 					ableToMove = 0
 				else
 					icon_state = ""
